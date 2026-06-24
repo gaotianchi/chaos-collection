@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<form id="ai-config-form" onsubmit="saveAIConfig(event)">
+    <label class="field">
+        <span>API 地址</span>
+        <input type="text" id="ai-base-url" value="{{ config.ai.base_url }}">
+    </label>
+    <label class="field">
+        <span>API Key</span>
+        <input type="password" id="ai-api-key" value="{{ config.ai.api_key }}">
+    </label>
+    <label class="field">
+        <span>模型</span>
+        <input type="text" id="ai-model" value="{{ config.ai.model }}">
+    </label>
+    <div class="field-actions">
+        <button type="submit">保存</button>
+        <span id="ai-config-status" class="status-msg hidden"></span>
+    </div>
+</form>
+{% endblock %}

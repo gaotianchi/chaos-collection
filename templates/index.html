@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-narrow">
+    <form id="record-form" onsubmit="return false">
+        <textarea id="idea-input" class="idea-textarea" placeholder="说点什么..." rows="1" autofocus></textarea>
+    </form>
+    <span id="input-hint" class="hint"></span>
+    <div class="tag-toggle">
+        <span class="day-header" style="margin:0">Tags</span>
+        <span class="tag-toggle-btns">
+            <button class="tag-toggle-btn active" onclick="switchTagRange('week', this)">This week</button>
+            <button class="tag-toggle-btn" onclick="switchTagRange('all', this)">All</button>
+        </span>
+    </div>
+    <canvas id="tag-cloud" class="tag-cloud"></canvas>
+    <div id="daily-summaries" class="daily-summaries"></div>
+</div>
+{% endblock %}

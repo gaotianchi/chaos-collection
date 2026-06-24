@@ -1,0 +1,150 @@
+/* Chaos Collection — dark theme */
+
+:root {
+    --bg: #1a1a1c;
+    --bg-surface: #242426;
+    --text: #e0e0dc;
+    --text-muted: #888;
+    --text-dim: #5a5a58;
+    --border: #333;
+    --radius: 8px;
+    --max-width-narrow: 640px;
+    --scrollbar-thumb: #3a3a3c;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+* { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) transparent; }
+
+body {
+    font-family: -apple-system, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8; font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Nav */
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0 32px; }
+.nav-brand { font-size: 18px; font-weight: 600; text-decoration: none; color: var(--text); }
+.nav-links { display: flex; gap: 16px; }
+.nav-links a { text-decoration: none; color: var(--text-muted); font-size: 16px; padding: 4px 8px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text); }
+
+/* Layout */
+.main { padding-bottom: 80px; }
+.container-narrow { max-width: var(--max-width-narrow); margin: 0 auto; padding: 0 24px; }
+
+/* Textarea */
+.idea-textarea {
+    width: 100%; border: none; border-bottom: 2px solid var(--border);
+    background: transparent; font-size: 18px; line-height: 1.8;
+    padding: 12px 0; resize: none; outline: none; font-family: inherit; color: var(--text);
+}
+.idea-textarea:focus { border-color: var(--text-dim); }
+.idea-textarea::placeholder { color: #444; }
+
+.hint { display: block; color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+/* Tag cloud */
+.tag-toggle { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; }
+.tag-toggle-btns { display: flex; gap: 4px; }
+.tag-toggle-btn {
+    border: none; background: none; font-size: 12px; cursor: pointer;
+    color: var(--text-dim); font-family: inherit; padding: 0; letter-spacing: 0.04em;
+}
+.tag-toggle-btn.active { color: var(--text); }
+.tag-toggle-btn + .tag-toggle-btn { margin-left: 12px; }
+.tag-cloud { display: block; width: 100%; max-width: 500px; height: 280px; margin: 8px auto 0; }
+
+/* Homepage — today */
+.daily-summaries { margin-top: 48px; }
+.day-group { margin-bottom: 36px; }
+.day-header { font-size: 12px; color: var(--text-muted); letter-spacing: 0.06em; margin-bottom: 10px; }
+.day-items { display: flex; flex-direction: column; }
+.day-empty { color: var(--text-muted); font-size: 14px; padding: 24px 0; text-align: center; }
+
+.day-item {
+    padding: 10px 0; cursor: pointer; display: flex; align-items: baseline; gap: 10px;
+}
+.day-item:hover { background: var(--bg-surface); }
+.item-time { font-size: 12px; color: var(--text-dim); flex-shrink: 0; width: 85px; cursor: pointer; }
+.item-summary {
+    font-size: 15px; color: var(--text); flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.item-summary.expanded { white-space: normal; overflow: visible; }
+
+/* Idea accordion */
+.idea-expand { padding: 4px 0 16px 0; }
+.ie-wrap { position: relative; }
+.ie-body { font-size: 14px; color: var(--text-muted); line-height: 1.9; white-space: pre-wrap; padding-right: 24px; }
+.ie-delete { float: right; font-size: 18px; color: var(--text-dim); cursor: pointer; line-height: 1; margin-left: 12px; }
+.ie-delete:hover { color: #c77a7a; }
+
+/* Archive — weekly groups */
+.week-group { margin-bottom: 36px; }
+.week-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; cursor: pointer; border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--text-muted); letter-spacing: 0.04em;
+}
+.week-header:hover { color: var(--text); }
+.week-count { font-size: 11px; color: var(--text-dim); }
+.week-body { padding-left: 4px; }
+.week-summary {
+    font-size: 14px; color: var(--text); line-height: 1.9; padding: 12px 0;
+    cursor: pointer;
+}
+
+.day-accordion { margin-bottom: 2px; }
+.day-row {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 8px 0; cursor: pointer; border-radius: 4px;
+}
+.day-row:hover { background: var(--bg-surface); }
+.day-row-date { font-size: 12px; color: var(--text-dim); flex-shrink: 0; width: 85px; cursor: pointer; }
+.day-row-text {
+    font-size: 14px; color: var(--text); flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.day-row-text.expanded { white-space: normal; overflow: visible; }
+
+.day-ideas { padding: 0 0 12px 95px; border-bottom: 1px solid var(--border); }
+
+.det-row {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer;
+}
+.det-row:hover { background: var(--bg-surface); }
+.det-row:last-child { border-bottom: none; }
+.det-time { font-size: 12px; color: var(--text-dim); flex-shrink: 0; width: 36px; cursor: pointer; }
+.det-text {
+    font-size: 15px; color: var(--text); flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.det-text.expanded { white-space: normal; overflow: visible; }
+
+/* Settings */
+.field { display: block; margin-bottom: 20px; }
+.field span { display: block; font-size: 12px; margin-bottom: 4px; color: var(--text-dim); letter-spacing: 0.04em; }
+.field input {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: 6px; font-size: 14px; font-family: inherit;
+    background: var(--bg); color: var(--text); outline: none;
+    transition: border-color 0.2s;
+}
+.field input:focus { border-color: var(--text-dim); }
+.field-actions { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+.field-actions button {
+    padding: 6px 0; border: none; border-bottom: 1px solid var(--text-dim);
+    background: none; color: var(--text); font-size: 14px;
+    cursor: pointer; font-family: inherit; transition: border-color 0.15s;
+}
+.field-actions button:hover { border-color: var(--text); }
+.status-msg { font-size: 12px; }
+.status-msg.success { color: #7ac77a; }
+.status-msg.error { color: #c77a7a; }
+
+.hidden { display: none !important; }
