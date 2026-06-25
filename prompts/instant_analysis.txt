@@ -14,5 +14,5 @@
 
 {vocabulary}
 
-输出 JSON：
+只输出一行合法的 JSON，确保逗号、引号、括号正确。不要包含解释或 markdown：
 {"summary": "...", "tags": ["...", "..."]}

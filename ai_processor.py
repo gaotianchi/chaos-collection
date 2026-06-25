@@ -51,7 +51,28 @@ async def _call_ai(prompt: str, temperature: float = 0.3, max_tokens: int = 500)
 
 def _parse_json(content: str) -> dict | list:
     cleaned = content.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-    return json.loads(cleaned)
+    # Try direct parse first
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        pass
+    # Try stripping trailing commas before closing brackets
+    import re
+    fixed = re.sub(r',\s*([}\]])', r'\1', cleaned)
+    try:
+        return json.loads(fixed)
+    except json.JSONDecodeError:
+        pass
+    # Try extracting the first JSON object/array with a regex
+    m = re.search(r'(\[.*\]|\{.*\})', cleaned, re.DOTALL)
+    if m:
+        try:
+            return json.loads(m.group(1))
+        except json.JSONDecodeError:
+            pass
+    # Last resort: return empty
+    log.error("JSON parse failed for: %s", content[:200])
+    return {}
 
 
 # ---------------------------------------------------------------------------
