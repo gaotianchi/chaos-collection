@@ -92,7 +92,7 @@ async function loadTagCloud() {
         const placed = [];
 
         // Font size range
-        const sizeMin = 14, sizeMax = 40;
+        const sizeMin = 11, sizeMax = 36;
         function fontSize(count) {
             if (maxCount === minCount) return (sizeMin + sizeMax) / 2;
             return sizeMin + (sizeMax - sizeMin) * (count - minCount) / (maxCount - minCount);
@@ -100,7 +100,7 @@ async function loadTagCloud() {
 
         // Spiral placement
         function tryPlace(w, h) {
-            for (let step = 0; step < 600; step++) {
+            for (let step = 0; step < 2000; step++) {
                 const angle = step * 0.15;
                 const r = step * 1.2;
                 const x = cx + r * Math.cos(angle) - w / 2;

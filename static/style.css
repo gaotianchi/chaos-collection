@@ -56,7 +56,7 @@ body {
 }
 .tag-toggle-btn.active { color: var(--text); }
 .tag-toggle-btn + .tag-toggle-btn { margin-left: 12px; }
-.tag-cloud { display: block; width: 100%; max-width: 500px; height: 280px; margin: 8px auto 0; }
+.tag-cloud { display: block; width: 100%; max-width: 500px; height: 380px; margin: 8px auto 0; }
 
 /* Homepage — today */
 .daily-summaries { margin-top: 48px; }
