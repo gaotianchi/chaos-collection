@@ -34,7 +34,7 @@ async function waitAndRefresh(ideaId) {
         try {
             const r = await fetch(`/api/ideas/${ideaId}`);
             const idea = await r.json();
-            if (idea.ai_tags && idea.ai_tags !== '[]') {
+            if ((idea.ai_tags && idea.ai_tags !== '[]') || idea.ai_summary) {
                 loadDailySummaries();
                 loadTagCloud();
                 return;
