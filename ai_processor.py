@@ -50,29 +50,82 @@ async def _call_ai(prompt: str, temperature: float = 0.3, max_tokens: int = 500)
 
 
 def _parse_json(content: str) -> dict | list:
+    import re
     cleaned = content.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-    # Try direct parse first
+    if not cleaned:
+        return {}
+
+    # Try direct parse
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
         pass
-    # Try stripping trailing commas before closing brackets
-    import re
+
+    # Strip trailing commas
     fixed = re.sub(r',\s*([}\]])', r'\1', cleaned)
     try:
         return json.loads(fixed)
     except json.JSONDecodeError:
         pass
-    # Try extracting the first JSON object/array with a regex
-    m = re.search(r'(\[.*\]|\{.*\})', cleaned, re.DOTALL)
+
+    # Try to close truncated JSON by adding missing brackets/quotes
+    result = _salvage_json(cleaned)
+    if result:
+        return result
+
+    # Try extracting any JSON object
+    m = re.search(r'(\{.*\}|\[.*\])', cleaned, re.DOTALL)
     if m:
-        try:
-            return json.loads(m.group(1))
-        except json.JSONDecodeError:
-            pass
-    # Last resort: return empty
-    log.error("JSON parse failed for: %s", content[:200])
+        return _salvage_json(m.group(1)) or {}
+        log.error("JSON parse failed for: %s", content[:200])
     return {}
+
+
+def _salvage_json(s: str) -> dict:
+    """Attempt to salvage partial JSON by closing truncated structures."""
+    import re
+    # Close unclosed strings by appending a quote
+    # Close unclosed arrays/objects by appending missing brackets
+    depth = 0
+    in_string = False
+    escape = False
+    for ch in s:
+        if escape:
+            escape = False
+            continue
+        if ch == '\\':
+            escape = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+        elif not in_string:
+            if ch in '{[':
+                depth += 1
+            elif ch in '}]':
+                depth -= 1
+
+    if depth <= 0:
+        return {}
+
+    # Close unclosed string
+    if in_string:
+        s += '"'
+
+    # Close remaining brackets
+    for ch in reversed(s):
+        if ch == '{':
+            s += '}'
+            depth -= 1
+        elif ch == '[':
+            s += ']'
+            depth -= 1
+        if depth <= 0:
+            break
+
+    try:
+        return json.loads(s)
+    except json.JSONDecodeError:
+        return {}
 
 
 # ---------------------------------------------------------------------------
@@ -95,7 +148,7 @@ async def process_idea_instant(raw_text: str) -> dict:
     prompt = template.replace("{vocabulary}", vocab) + "\n" + raw_text
 
     try:
-        content = await _call_ai(prompt, temperature=0.3, max_tokens=500)
+        content = await _call_ai(prompt, temperature=0.3, max_tokens=800)
         result = _parse_json(content)
         tags = result.get("tags", [])
         summary = result.get("summary", "")

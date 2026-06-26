@@ -125,20 +125,22 @@ async def lifespan(app: FastAPI):
     init_db()
     cfg = load_config()
     log.info("DB initialized | AI: %s (model=%s)", cfg["ai"]["base_url"], cfg["ai"]["model"])
-    async def periodic_backup():
+    async def periodic_tasks():
         while True:
-            await asyncio.sleep(1800)  # every 30 minutes
+            await asyncio.sleep(1800)
             try:
                 backup_database()
+                await catch_up_ideas()
+                await catch_up_summaries()
             except Exception as e:
-                log.error("Periodic backup failed: %s", e)
+                log.error("Periodic task failed: %s", e)
 
     asyncio.create_task(catch_up_ideas())
     asyncio.create_task(catch_up_summaries())
     backup_database()
-    backup_task = asyncio.create_task(periodic_backup())
+    periodic_task = asyncio.create_task(periodic_tasks())
     yield
-    backup_task.cancel()
+    periodic_task.cancel()
     backup_database()
     log.info("=== Chaos Collection shutting down ===")
 
