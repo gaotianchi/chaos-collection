@@ -29,8 +29,9 @@ async function submitIdea() {
 }
 
 async function waitAndRefresh(ideaId) {
-    for (let i = 0; i < 20; i++) {
-        await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 4000));  // wait 4s before first check
+    for (let i = 0; i < 10; i++) {
+        await new Promise(r => setTimeout(r, 3000));  // check every 3s
         try {
             const r = await fetch(`/api/ideas/${ideaId}`);
             const idea = await r.json();
