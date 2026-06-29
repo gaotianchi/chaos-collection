@@ -103,10 +103,10 @@ async function loadTagCloud() {
         function tryPlace(w, h) {
             for (let step = 0; step < 2000; step++) {
                 const angle = step * 0.15;
-                const r = step * 1.2;
+                const r = step * 1.1;
                 const x = cx + r * Math.cos(angle) - w / 2;
                 const y = cy + r * Math.sin(angle) - h / 2;
-                if (x < 4 || y < 4 || x + w > cw - 4 || y + h > ch - 4) continue;
+                if (x < 8 || y < 4 || x + w > cw - 8 || y + h > ch - 8) continue;
                 let overlap = false;
                 for (const p of placed) {
                     if (x < p.x + p.w && x + w > p.x && y < p.y + p.h && y + h > p.y) {
